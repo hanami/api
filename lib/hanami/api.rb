@@ -92,8 +92,12 @@ module Hanami
 
     def freeze
       @app = @stack.finalize(@router)
+      @url_helpers = @router.url_helpers
+      @router.remove_instance_variable(:@url_helpers)
       remove_instance_variable(:@stack)
-      @router.freeze
+      remove_instance_variable(:@router)
+      @url_helpers.freeze
+      @app.freeze
       super
     end
 
@@ -103,12 +107,12 @@ module Hanami
 
     # TODO: verify if needed here on in block context
     def path(name, variables = {})
-      @router.path(name, variables)
+      @url_helpers.path(name, variables)
     end
 
     # TODO: verify if needed here on in block context
     def url(name, variables = {})
-      @router.url(name, variables)
+      @url_helpers.url(name, variables)
     end
   end
 end

@@ -29,7 +29,7 @@ module Hanami
 
         def finalize(app) # rubocop:disable Metrics/MethodLength
           uniq!
-          return app.freeze if @stack.empty?
+          return app if @stack.empty?
 
           s = self
 
@@ -43,7 +43,7 @@ module Hanami
 
               run app
             end
-          end.freeze
+          end
         end
 
         def each(&blk)
