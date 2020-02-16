@@ -52,13 +52,9 @@ module Hanami
         private
 
         def caught
-          result = nil
-          halted = catch :halt do
-            result = instance_exec(&@blk)
-            nil
+          catch :halt do
+            instance_exec(&@blk)
           end
-
-          halted || result
         end
 
         def http_status(code)
