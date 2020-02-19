@@ -2,7 +2,7 @@
 
 module Hanami
   class API
-    # @since x.x.x
+    # @since 0.1.0
     VERSION = "0.1.0"
   end
 end

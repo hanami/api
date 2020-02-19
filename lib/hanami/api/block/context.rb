@@ -15,7 +15,7 @@ module Hanami
         #   Sets the HTTP body
         #   @param value [String] the HTTP response body
         #
-        # @since x.x.x
+        # @since 0.1.0
         def body(value = nil)
           if value
             @body = value
@@ -48,7 +48,7 @@ module Hanami
         #
         #   # It sets a Rack response: [401, {}, ["You shall not pass"]]
         #
-        # @since x.x.x
+        # @since 0.1.0
         def halt(status, body = nil)
           body ||= http_status(status)
           throw :halt, [status, body]
@@ -61,7 +61,7 @@ module Hanami
         #
         # @see #halt
         #
-        # @since x.x.x
+        # @since 0.1.0
         #
         # @example URL
         #   get "/legacy" do
@@ -87,7 +87,7 @@ module Hanami
 
         # Utility for redirect back using HTTP request header `HTTP_REFERER`
         #
-        # @since x.x.x
+        # @since 0.1.0
         #
         # @example
         #   get "/authenticate" do
@@ -106,7 +106,7 @@ module Hanami
         # @param object [Object] a JSON serializable object
         # @param mime [String] optional MIME type to set for the response
         #
-        # @since x.x.x
+        # @since 0.1.0
         #
         # @example JSON serializable object
         #   get "/user/:id" do
@@ -124,7 +124,7 @@ module Hanami
           JSON.generate(object)
         end
 
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def call
           case caught
@@ -142,7 +142,7 @@ module Hanami
 
         private
 
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def caught
           catch :halt do
@@ -150,7 +150,7 @@ module Hanami
           end
         end
 
-        # @since x.x.x
+        # @since 0.1.0
         # @api private
         def http_status(code)
           Rack::Utils::HTTP_STATUS_CODES.fetch(code)

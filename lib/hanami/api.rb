@@ -10,7 +10,7 @@ module Hanami
     require "hanami/api/router"
     require "hanami/api/middleware"
 
-    # @since x.x.x
+    # @since 0.1.0
     # @api private
     def self.inherited(app)
       super
@@ -22,11 +22,11 @@ module Hanami
     end
 
     class << self
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       attr_reader :routes
 
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       attr_reader :stack
     end
@@ -236,7 +236,7 @@ module Hanami
     # @param path [String] the scope path to be used as a path prefix
     # @param blk [Proc] the routes definitions withing the scope
     #
-    # @since x.x.x
+    # @since 0.1.0
     #
     # @see #path
     #
@@ -297,7 +297,7 @@ module Hanami
       @stack.use(middleware, args, &blk)
     end
 
-    # @since x.x.x
+    # @since 0.1.0
     def initialize(routes: self.class.routes, stack: self.class.stack)
       @stack = stack
       @router = Router.new(stack: @stack) do
@@ -309,7 +309,7 @@ module Hanami
       freeze
     end
 
-    # @since x.x.x
+    # @since 0.1.0
     def freeze
       @app = @stack.finalize(@router)
       @url_helpers = @router.url_helpers
@@ -321,14 +321,14 @@ module Hanami
       super
     end
 
-    # @since x.x.x
+    # @since 0.1.0
     def call(env)
       @app.call(env)
     end
 
     # TODO: verify if needed here on in block context
     #
-    # @since x.x.x
+    # @since 0.1.0
     # @api private
     def path(name, variables = {})
       @url_helpers.path(name, variables)
@@ -336,7 +336,7 @@ module Hanami
 
     # TODO: verify if needed here on in block context
     #
-    # @since x.x.x
+    # @since 0.1.0
     # @api private
     def url(name, variables = {})
       @url_helpers.url(name, variables)

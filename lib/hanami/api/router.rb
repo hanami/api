@@ -5,16 +5,16 @@ require "hanami/api/block/context"
 
 module Hanami
   class API
-    # @since x.x.x
+    # @since 0.1.0
     class Router < ::Hanami::Router
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       def initialize(stack:, **kwargs, &blk)
         @stack = stack
         super(block_context: Block::Context, **kwargs, &blk)
       end
 
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       def freeze
         return self if frozen?
@@ -23,13 +23,13 @@ module Hanami
         super
       end
 
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       def use(middleware, *args, &blk)
         @stack.use(middleware, args, &blk)
       end
 
-      # @since x.x.x
+      # @since 0.1.0
       # @api private
       def scope(*args, **kwargs, &blk)
         @stack.with(args.first) do
