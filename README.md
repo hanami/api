@@ -40,7 +40,6 @@ Runtime to complete 20,000 requests (lower is better).
 | rack-app   | 0.6226229998283088  |
 | cuba       | 1.2913489998318255  |
 | rails      | 17.04722599987872   |
-| synfeld    | 171.83788800006732  |
 | sinatra    | 197.47695700009353  |
 
 ### Memory
@@ -57,7 +56,21 @@ Memory footprint for 10,000 routes app (lower is better).
 | watts      | 84956  |
 | sinatra    | 124980 |
 | rails      | 143048 |
-| synfeld    | 172680 |
+
+### Requests per second
+
+Requests per second hitting the 1st and the 10,000th route to measure the best and worst case scenario (higher is better).
+
+| Framework  | 1st route | 10,000th route |
+|------------|-----------|----------------|
+| hanami-api | 14719.95  | 14290.20       |
+| watts      | 13912.31  | 12609.68       |
+| roda       | 13965.20  | 11051.27       |
+| syro       | 13079.12  | 10689.51       |
+| rack-app   | 10274.01  | 10306.46       |
+| cuba       | 13061.82  | 7084.33        |
+| rails      | 1345.27   | 303.06         |
+| sinatra    | 5038.74   | 28.14          |
 
 ## Usage
 
