@@ -59,7 +59,8 @@ Memory footprint for 10,000 routes app (lower is better).
 
 ### Requests per second
 
-Requests per second hitting the 1st and the 10,000th route to measure the best and worst case scenario (higher is better).
+For this benchmark there are two apps for each framework: one with the root route, and one with 10,000 routes.
+Requests per second hitting the 1st (and only route) and the 10,000th route to measure the best and worst case scenario (higher is better).
 
 | Framework  | 1st route | 10,000th route |
 |------------|-----------|----------------|
