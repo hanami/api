@@ -234,7 +234,7 @@ get "/" do
 end
 ```
 
-Get HTTP response body
+Set HTTP response body
 
 ```ruby
 get "/" do
