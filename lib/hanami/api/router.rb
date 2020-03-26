@@ -31,7 +31,7 @@ module Hanami
 
       # @since 0.1.0
       # @api private
-      def scope(*args, **kwargs, &blk)
+      def scope(*args, &blk)
         @stack.with(args.first) do
           super
         end
