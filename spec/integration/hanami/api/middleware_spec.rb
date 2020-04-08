@@ -7,6 +7,7 @@ RSpec.describe Hanami::API do
     let(:api) do
       elapsed = elapsed_middleware
       auth = auth_middleware
+      rate_limiter = rate_limiter_middleware
 
       Class.new(described_class) do
         use elapsed
@@ -17,6 +18,17 @@ RSpec.describe Hanami::API do
 
           root to: lambda { |env|
             body = "Admin: User ID (#{env['AUTH_USER_ID']})"
+            [200, { "Content-Length" => body.bytesize }, [body]]
+          }
+        end
+
+        # Without leading slash
+        # See: https://github.com/hanami/api/issues/8
+        scope "api" do
+          use rate_limiter
+
+          root to: lambda { |env|
+            body = "API"
             [200, { "Content-Length" => body.bytesize }, [body]]
           }
         end
@@ -68,6 +80,21 @@ RSpec.describe Hanami::API do
       end
     end
 
+    let(:rate_limiter_middleware) do
+      Class.new do
+        def initialize(app)
+          @app = app
+        end
+
+        def call(env)
+          status, headers, body = @app.call(env)
+          headers["X-Rate-Limit-Quota"] = "4000"
+
+          [status, headers, body]
+        end
+      end
+    end
+
     it "uses Rack middleware" do
       response = app.get("/", lint: true)
 
@@ -95,6 +122,14 @@ RSpec.describe Hanami::API do
 
         expect(response.headers).to have_key("X-Elapsed")
         expect(response.headers).to have_key("X-Auth-User-ID")
+      end
+
+      # See: https://github.com/hanami/api/issues/8
+      it "uses Rack middleware for scope w/o leading slash" do
+        response = app.get("/api", lint: true)
+
+        expect(response.headers).to have_key("X-Elapsed")
+        expect(response.headers).to have_key("X-Rate-Limit-Quota")
       end
     end
   end

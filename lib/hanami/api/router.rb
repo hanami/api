@@ -7,6 +7,11 @@ module Hanami
   class API
     # @since 0.1.0
     class Router < ::Hanami::Router
+      # @since 0.1.1
+      # @api private
+      PATH_SEPARATOR = "/"
+      private_constant :PATH_SEPARATOR
+
       # @since 0.1.0
       # @api private
       def initialize(stack:, **kwargs, &blk)
@@ -32,7 +37,10 @@ module Hanami
       # @since 0.1.0
       # @api private
       def scope(*args, &blk)
-        @stack.with(args.first) do
+        path = args.first
+        path = (PATH_SEPARATOR + path) unless path.start_with?(PATH_SEPARATOR)
+
+        @stack.with(path) do
           super
         end
       end
