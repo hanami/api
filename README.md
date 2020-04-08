@@ -1,6 +1,38 @@
 # Hanami::API
 
 Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
+* [Installation](#installation)
+* [Performance](#performance)
+  + [Runtime](#runtime)
+  + [Memory](#memory)
+  + [Requests per second](#requests-per-second)
+* [Usage](#usage)
+  + [Routes](#routes)
+  + [HTTP methods](#http-methods)
+  + [Endpoints](#endpoints)
+    - [Rack endpoint](#rack-endpoint)
+    - [Block endpoint](#block-endpoint)
+      * [String (body)](#string--body-)
+      * [Integer (status code)](#integer--status-code-)
+      * [Integer, String (status code, body)](#integer--string--status-code--body-)
+      * [Integer, Hash, String (status code, headers, body)](#integer--hash--string--status-code--headers--body-)
+  + [Block context](#block-context)
+    - [env](#env)
+    - [status](#status)
+    - [headers](#headers)
+    - [body](#body)
+    - [params](#params)
+    - [halt](#halt)
+    - [redirect](#redirect)
+    - [back](#back)
+    - [json](#json)
+  + [Scope](#scope)
+  + [Rack Middleware](#rack-middleware)
+* [Development](#development)
+* [Contributing](#contributing)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 
 ## Installation
 
@@ -137,7 +169,7 @@ get "/", to: MyRackEndpoint.new
 A block passed to the route definition is named a block endpoint.
 The returning value will compose the Rack response. It can be:
 
-##### String
+##### String (body)
 
 ```ruby
 get "/" do
@@ -147,7 +179,7 @@ end
 
 It will return `[200, {}, ["Hello, world"]]`
 
-##### Integer
+##### Integer (status code)
 
 ```ruby
 get "/" do
@@ -157,7 +189,7 @@ end
 
 It will return `[418, {}, ["I'm a teapot"]]`
 
-##### Integer, String
+##### Integer, String (status code, body)
 
 ```ruby
 get "/" do
@@ -167,7 +199,7 @@ end
 
 It will return `[401, {}, ["You shall not pass"]]`
 
-##### Integer, Hash, String
+##### Integer, Hash, String (status code, headers, body)
 
 ```ruby
 get "/" do
