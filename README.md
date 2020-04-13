@@ -65,14 +65,14 @@ Runtime to complete 20,000 requests (lower is better).
 
 | Framework  | Seconds to complete |
 |------------|---------------------|
-| hanami-api | 0.11628299998119473 |
-| watts      | 0.23525599995628    |
-| roda       | 0.348202999914065   |
-| syro       | 0.355627000099048   |
-| rack-app   | 0.6226229998283088  |
-| cuba       | 1.2913489998318255  |
-| rails      | 17.04722599987872   |
-| sinatra    | 197.47695700009353  |
+| hanami-api | 0.116               |
+| watts      | 0.235               |
+| roda       | 0.348               |
+| syro       | 0.356               |
+| rack-app   | 0.623               |
+| cuba       | 1.291               |
+| rails      | 17.047              |
+| sinatra    | 197.477             |
 
 ### Memory
 
