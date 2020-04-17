@@ -2,6 +2,7 @@
 
 require "hanami/router"
 require "hanami/api/block/context"
+require "hanami/router/prefix"
 
 module Hanami
   class API
@@ -9,8 +10,8 @@ module Hanami
     class Router < ::Hanami::Router
       # @since 0.1.1
       # @api private
-      PATH_SEPARATOR = "/"
-      private_constant :PATH_SEPARATOR
+      SCOPE_PREFIX = ::Hanami::Router::Prefix.new("/").freeze
+      private_constant :SCOPE_PREFIX
 
       # @since 0.1.0
       # @api private
@@ -37,8 +38,7 @@ module Hanami
       # @since 0.1.0
       # @api private
       def scope(*args, &blk)
-        path = args.first
-        path = (PATH_SEPARATOR + path) unless path.start_with?(PATH_SEPARATOR)
+        path = SCOPE_PREFIX.join(args.first).to_s
 
         @stack.with(path) do
           super
