@@ -9,6 +9,8 @@ module Hanami
     # @since 0.1.0
     # @api private
     module Middleware
+      require "hanami/api/middleware/trie"
+
       # Middleware stack
       #
       # @since 0.1.0
@@ -16,38 +18,22 @@ module Hanami
       class Stack
         # @since 0.1.0
         # @api private
-        ROOT_PREFIX = "/"
-        private_constant :ROOT_PREFIX
-
-        # @since 0.1.0
-        # @api private
-        def initialize
-          @prefix = ROOT_PREFIX
+        def initialize(prefix)
+          @prefix = prefix
+          @_stack = Trie.new(prefix)
           @stack = Hash.new { |hash, key| hash[key] = [] }
         end
 
         # @since 0.1.0
         # @api private
-        def use(middleware, args, &blk)
-          @stack[@prefix].push([middleware, args, blk])
-        end
-
-        # @since 0.1.0
-        # @api private
-        def with(path)
-          prefix = @prefix
-          @prefix = path
-          yield
-        ensure
-          @prefix = prefix
+        def use(prefix, middleware, *args, &blk)
+          @_stack.add(prefix, [middleware, args, blk])
+          @stack[prefix].push([middleware, args, blk])
         end
 
         # @since 0.1.0
         # @api private
         def finalize(app) # rubocop:disable Metrics/MethodLength
-          uniq!
-          return app if @stack.empty?
-
           s = self
 
           Rack::Builder.new do
@@ -60,20 +46,27 @@ module Hanami
 
               run app
             end
-          end
+          end.to_app
         end
 
         # @since 0.1.0
         # @api private
         def each(&blk)
           uniq!
-          @stack.each(&blk)
+          @_stack.each(&blk)
+        end
+
+        # @since 0.1.0
+        # @api private
+        def empty?
+          uniq!
+          @_stack.empty?
         end
 
         # @since 0.1.0
         # @api private
         def mapped(builder, prefix, &blk)
-          if prefix == ROOT_PREFIX
+          if prefix == @prefix
             builder.instance_eval(&blk)
           else
             builder.map(prefix, &blk)
