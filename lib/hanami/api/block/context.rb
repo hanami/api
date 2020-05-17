@@ -131,7 +131,16 @@ module Hanami
             in String => body
             [status, headers, [body]]
             in Integer => status
+            # rubocop:disable Style/RedundantSelf
+            #
+            # NOTE: It must use `self.body` so it will pick the method defined above.
+            #
+            #       If `self` isn't enforced, Ruby will try to bind `body` to
+            #       the current pattern matching context.
+            #       When that happens, the body that was manually set is ignored,
+            #       which results in a bug.
             [status, headers, [self.body || http_status(status)]]
+            # rubocop:enable Style/RedundantSelf
             in [Integer, String] => response
             [response[0], headers, [response[1]]]
             in [Integer, Hash, String] => response

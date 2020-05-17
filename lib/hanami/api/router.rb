@@ -32,8 +32,6 @@ module Hanami
       # @since 0.1.1
       # @api private
       def to_rack_app
-        return self if @stack.empty?
-
         @stack.finalize(self)
       end
     end

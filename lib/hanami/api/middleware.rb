@@ -10,7 +10,6 @@ module Hanami
     # @api private
     module Middleware
       require "hanami/api/middleware/trie"
-
       # Middleware stack
       #
       # @since 0.1.0
@@ -20,65 +19,64 @@ module Hanami
         # @api private
         def initialize(prefix)
           @prefix = prefix
-          @_stack = Trie.new(prefix)
-          @stack = Hash.new { |hash, key| hash[key] = [] }
+          @stack = {}
         end
 
         # @since 0.1.0
         # @api private
-        def use(prefix, middleware, *args, &blk)
-          @_stack.add(prefix, [middleware, args, blk])
-          @stack[prefix].push([middleware, args, blk])
+        def use(path, middleware, *args, &blk)
+          # FIXME: test with prefix
+          @stack[path] ||= []
+          @stack[path].push([middleware, args, blk])
         end
 
-        # @since 0.1.0
-        # @api private
-        def finalize(app) # rubocop:disable Metrics/MethodLength
-          s = self
+        def to_hash
+          @stack.each_with_object({}) do |(path, _), result|
+            result[path] = stack_for(path)
+          end
+        end
 
-          Rack::Builder.new do
-            s.each do |prefix, stack|
-              s.mapped(self, prefix) do
-                stack.each do |middleware, args, blk|
-                  use(middleware, *args, &blk)
-                end
+        class App
+          def initialize(app, mapping)
+            @trie = Hanami::API::Middleware::Trie.new(app, "/")
+
+            mapping.each do |prefix, stack|
+              builder = Rack::Builder.new
+
+              stack.each do |middleware, args, blk|
+                builder.use(middleware, *args, &blk)
               end
 
-              run app
+              builder.run(app)
+
+              @trie.add(prefix, builder.to_app.freeze)
             end
-          end.to_app
-        end
 
-        # @since 0.1.0
-        # @api private
-        def each(&blk)
-          uniq!
-          @_stack.each(&blk)
-        end
-
-        # @since 0.1.0
-        # @api private
-        def empty?
-          uniq!
-          @_stack.empty?
-        end
-
-        # @since 0.1.0
-        # @api private
-        def mapped(builder, prefix, &blk)
-          if prefix == @prefix
-            builder.instance_eval(&blk)
-          else
-            builder.map(prefix, &blk)
+            @trie.freeze
           end
+
+          def call(env)
+            @trie.find(env["PATH_INFO"]).call(env)
+          end
+        end
+
+        def finalize(app)
+          mapping = to_hash
+          return app if mapping.empty?
+
+          App.new(app, mapping)
         end
 
         private
 
-        # @since 0.1.0
+        # @since x.x.x
         # @api private
-        def uniq!
-          @stack.each_value(&:uniq!)
+        def stack_for(current_path)
+          @stack.each_with_object([]) do |(path, stack), result|
+            next unless current_path.start_with?(path)
+
+            result.push(stack)
+          end.flatten(1)
         end
       end
     end

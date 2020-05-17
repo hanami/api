@@ -15,39 +15,26 @@ module Hanami
 
         # @api private
         # @since 2.0.0
-        def initialize(prefix)
+        def initialize(app, prefix)
+          @app = app
           @prefix = Hanami::Router::Prefix.new(prefix)
           @root = Node.new
         end
 
+        def freeze
+          @root.freeze
+          super
+        end
+
         # @api private
         # @since 2.0.0
-        def add(path, middleware)
+        def add(path, app)
           node = @root
           for_each_segment(path) do |segment|
             node = node.put(segment)
           end
 
-          node.middleware!(middleware)
-        end
-
-        def each(node = @root, prefix = self.prefix, stack = [], result = {}, &blk)
-          if @root.middleware_stack.any?
-            result[self.prefix.to_s] ||= stack
-            result[self.prefix.to_s] += @root.middleware_stack
-          end
-
-          node.each_child do |segment, child|
-            path = prefix.join(segment)
-            if child.middleware_stack.any?
-              result[path.to_s] ||= stack
-              result[path.to_s] += child.middleware_stack
-            end
-
-            return each(child, path, result[path.to_s], result, &blk) unless child.leaf?
-          end
-
-          result.each(&blk)
+          node.app!(app)
         end
 
         # @api private
@@ -61,9 +48,9 @@ module Hanami
             node = node.get(segment)
           end
 
-          return node.slice if node&.leaf?
+          return node.app if node&.app?
 
-          nil
+          @root.app || @app
         end
 
         def empty?

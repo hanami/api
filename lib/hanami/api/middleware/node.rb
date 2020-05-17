@@ -10,13 +10,18 @@ module Hanami
       class Node
         # @api private
         # @since 2.0.0
-        attr_reader :middleware_stack
+        attr_reader :app
 
         # @api private
         # @since 2.0.0
         def initialize
-          @middleware_stack = []
+          @app = nil
           @children = {}
+        end
+
+        def freeze
+          @children.each(&:freeze)
+          super
         end
 
         # @api private
@@ -37,8 +42,12 @@ module Hanami
 
         # @api private
         # @since 2.0.0
-        def middleware!(middleware)
-          @middleware_stack.push(middleware)
+        def app!(app)
+          @app = app
+        end
+
+        def app?
+          @app
         end
 
         # @api private
