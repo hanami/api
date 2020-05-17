@@ -25,7 +25,7 @@ module Hanami
         # @since 0.1.0
         # @api private
         def use(path, middleware, *args, &blk)
-          # FIXME: test with prefix
+          # FIXME: test with prefix when Hanami::API.settings and prefix will be supported
           @stack[path] ||= []
           @stack[path].push([middleware, args, blk])
         end
