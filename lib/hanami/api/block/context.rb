@@ -126,6 +126,9 @@ module Hanami
 
         # @since 0.1.0
         # @api private
+        #
+        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable Metrics/MethodLength
         def call
           case caught
             in String => body
@@ -148,6 +151,8 @@ module Hanami
             [response[0], headers, [response[2]]]
           end
         end
+        # rubocop:enable Metrics/MethodLength
+        # rubocop:enable Metrics/AbcSize
 
         private
 

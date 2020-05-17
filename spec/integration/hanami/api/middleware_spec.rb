@@ -114,7 +114,7 @@ RSpec.describe Hanami::API do
       end
     end
 
-    def scope_identifier_middleware(identifier)
+    def scope_identifier_middleware(identifier) # rubocop:disable Metrics/MethodLength
       Class.new do
         @identifier = identifier
 
