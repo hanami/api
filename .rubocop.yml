@@ -5,6 +5,6 @@
 #   * https://github.com/bbatsov/ruby-style-guide
 #   * https://rubocop.readthedocs.io/
 inherit_from:
-  - https://raw.githubusercontent.com/jodosha/dotfiles/master/rubocop.yml
+  - https://raw.githubusercontent.com/hanami/devtools/master/.rubocop-unstable.yml
 AllCops:
   TargetRubyVersion: 2.7

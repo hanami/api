@@ -7,6 +7,9 @@ require "json"
 module Hanami
   class API
     module Block
+      # Execution context for Block syntax
+      #
+      # @since 0.1.0
       class Context < Hanami::Router::Block::Context
         # @overload body
         #   Gets the current HTTP response body
