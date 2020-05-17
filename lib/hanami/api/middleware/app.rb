@@ -12,10 +12,10 @@ module Hanami
       class App
         # @since 0.1.1
         # @api private
-        def initialize(app, mapping)
-          @trie = Hanami::API::Middleware::Trie.new(app, "/")
+        def initialize(app, prefix, mapping)
+          @trie = Hanami::API::Middleware::Trie.new(app, prefix)
 
-          mapping.each do |prefix, stack|
+          mapping.each do |path, stack|
             builder = Rack::Builder.new
 
             stack.each do |middleware, args, blk|
@@ -24,7 +24,7 @@ module Hanami
 
             builder.run(app)
 
-            @trie.add(prefix, builder.to_app.freeze)
+            @trie.add(path, builder.to_app.freeze)
           end
 
           @trie.freeze
