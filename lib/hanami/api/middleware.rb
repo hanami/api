@@ -44,7 +44,7 @@ module Hanami
           mapping = to_hash
           return app if mapping.empty?
 
-          App.new(app, @prefix, mapping)
+          App.new(app, mapping)
         end
 
         private

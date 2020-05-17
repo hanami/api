@@ -1,33 +1,31 @@
 # frozen_string_literal: true
 
-require "hanami/router/prefix"
 require "hanami/api/middleware/node"
 
 module Hanami
   class API
     module Middleware
-      # Endpoint resolver trie to register slices
+      # Trie to register scopes with custom Rack middleware
       #
       # @api private
-      # @since 2.0.0
+      # @since 0.1.1
       class Trie
-        attr_reader :prefix
-
         # @api private
-        # @since 2.0.0
-        def initialize(app, prefix)
+        # @since 0.1.1
+        def initialize(app)
           @app = app
-          @prefix = Hanami::Router::Prefix.new(prefix)
           @root = Node.new
         end
 
+        # @api private
+        # @since 0.1.1
         def freeze
           @root.freeze
           super
         end
 
         # @api private
-        # @since 2.0.0
+        # @since 0.1.1
         def add(path, app)
           node = @root
           for_each_segment(path) do |segment|
@@ -38,7 +36,7 @@ module Hanami
         end
 
         # @api private
-        # @since 2.0.0
+        # @since 0.1.1
         def find(path)
           node = @root
 
@@ -53,6 +51,8 @@ module Hanami
           @root.app || @app
         end
 
+        # @api private
+        # @since 0.1.1
         def empty?
           @root.leaf?
         end
@@ -60,7 +60,7 @@ module Hanami
         private
 
         # @api private
-        # @since 2.0.0
+        # @since 0.1.1
         def for_each_segment(path, &blk)
           _, *segments = path.split(/\//)
           segments.each(&blk)

@@ -12,8 +12,8 @@ module Hanami
       class App
         # @since 0.1.1
         # @api private
-        def initialize(app, prefix, mapping)
-          @trie = Hanami::API::Middleware::Trie.new(app, prefix)
+        def initialize(app, mapping)
+          @trie = Hanami::API::Middleware::Trie.new(app)
 
           mapping.each do |path, stack|
             builder = Rack::Builder.new
