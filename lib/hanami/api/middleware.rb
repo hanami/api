@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "rack/builder"
-
 module Hanami
   class API
     # Hanami::API middleware stack
@@ -9,7 +7,9 @@ module Hanami
     # @since 0.1.0
     # @api private
     module Middleware
+      require "hanami/api/middleware/app"
       require "hanami/api/middleware/trie"
+
       # Middleware stack
       #
       # @since 0.1.0
@@ -30,36 +30,16 @@ module Hanami
           @stack[path].push([middleware, args, blk])
         end
 
+        # @since 0.1.1
+        # @api private
         def to_hash
           @stack.each_with_object({}) do |(path, _), result|
             result[path] = stack_for(path)
           end
         end
 
-        class App
-          def initialize(app, mapping)
-            @trie = Hanami::API::Middleware::Trie.new(app, "/")
-
-            mapping.each do |prefix, stack|
-              builder = Rack::Builder.new
-
-              stack.each do |middleware, args, blk|
-                builder.use(middleware, *args, &blk)
-              end
-
-              builder.run(app)
-
-              @trie.add(prefix, builder.to_app.freeze)
-            end
-
-            @trie.freeze
-          end
-
-          def call(env)
-            @trie.find(env["PATH_INFO"]).call(env)
-          end
-        end
-
+        # @since 0.1.1
+        # @api private
         def finalize(app)
           mapping = to_hash
           return app if mapping.empty?
@@ -69,7 +49,7 @@ module Hanami
 
         private
 
-        # @since x.x.x
+        # @since 0.1.1
         # @api private
         def stack_for(current_path)
           @stack.each_with_object([]) do |(path, stack), result|
