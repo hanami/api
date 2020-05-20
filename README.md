@@ -28,6 +28,7 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
     - [json](#json)
   + [Scope](#scope)
   + [Rack Middleware](#rack-middleware)
+  + [Body Parsers](#body-parsers)
 * [Development](#development)
 * [Contributing](#contributing)
 
@@ -409,6 +410,20 @@ In the example above, `ElapsedTime` is used for each incoming request because
 it's part of the top level scope. `ApiAuthentication` it's used for all the API
 versions, because it's defined in the `"api"` scope. `ApiV1Deprecation` is used
 only by the routes in `"v1"` scope, but not by `"v2"`.
+
+### Body Parsers
+
+Rack ignores request bodies unless they come from a form submission.
+If you have an endpoint that accepts JSON, the request payload isn’t available in `params`.
+
+In order to parse JSON payload and make it avaliable in `params`, you should add the following lines to `config.ru`:
+
+```ruby
+# frozen_string_literal: true
+require "hanami/middleware/body_parser"
+
+use Hanami::Middleware::BodyParser, :json
+```
 
 ## Development
 
