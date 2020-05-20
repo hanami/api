@@ -12,10 +12,10 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
   + [Endpoints](#endpoints)
     - [Rack endpoint](#rack-endpoint)
     - [Block endpoint](#block-endpoint)
-      * [String (body)](#string--body-)
-      * [Integer (status code)](#integer--status-code-)
-      * [Integer, String (status code, body)](#integer--string--status-code--body-)
-      * [Integer, Hash, String (status code, headers, body)](#integer--hash--string--status-code--headers--body-)
+      * [String (body)](#string-body)
+      * [Integer (status code)](#integer-status-code)
+      * [Integer, String (status code, body)](#integer-string-status-code-body)
+      * [Integer, Hash, String (status code, headers, body)](#integer-hash-string-status-code-headers-body)
   + [Block context](#block-context)
     - [env](#env)
     - [status](#status)
@@ -30,9 +30,6 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
   + [Rack Middleware](#rack-middleware)
 * [Development](#development)
 * [Contributing](#contributing)
-
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 ## Installation
 
