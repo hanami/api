@@ -16,19 +16,14 @@ module Hanami
       super
 
       app.class_eval do
-        @routes = []
-        @stack = Middleware::Stack.new
+        @router = Router.new
       end
     end
 
     class << self
-      # @since 0.1.0
+      # @since 0.1.1
       # @api private
-      attr_reader :routes
-
-      # @since 0.1.0
-      # @api private
-      attr_reader :stack
+      attr_reader :router
     end
 
     # Defines a named root route (a GET route for "/")
@@ -56,7 +51,7 @@ module Hanami
     #     end
     #   end
     def self.root(*args, **kwargs, &blk)
-      @routes << [:root, args, kwargs, blk]
+      @router.root(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts GET requests for the given path.
@@ -93,7 +88,7 @@ module Hanami
     #     get "/users/:id", to: ->(*) { [200, {}, ["OK"]] }, id: /\d+/
     #   end
     def self.get(*args, **kwargs, &blk)
-      @routes << [:get, args, kwargs, blk]
+      @router.get(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts POST requests for the given path.
@@ -108,7 +103,7 @@ module Hanami
     #
     # @see .get
     def self.post(*args, **kwargs, &blk)
-      @routes << [:post, args, kwargs, blk]
+      @router.post(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts PATCH requests for the given path.
@@ -123,7 +118,7 @@ module Hanami
     #
     # @see .get
     def self.patch(*args, **kwargs, &blk)
-      @routes << [:patch, args, kwargs, blk]
+      @router.patch(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts PUT requests for the given path.
@@ -138,7 +133,7 @@ module Hanami
     #
     # @see .get
     def self.put(*args, **kwargs, &blk)
-      @routes << [:put, args, kwargs, blk]
+      @router.put(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts DELETE requests for the given path.
@@ -153,7 +148,7 @@ module Hanami
     #
     # @see .get
     def self.delete(*args, **kwargs, &blk)
-      @routes << [:delete, args, kwargs, blk]
+      @router.delete(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts TRACE requests for the given path.
@@ -168,7 +163,7 @@ module Hanami
     #
     # @see .get
     def self.trace(*args, **kwargs, &blk)
-      @routes << [:trace, args, kwargs, blk]
+      @router.trace(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts OPTIONS requests for the given path.
@@ -183,7 +178,7 @@ module Hanami
     #
     # @see .get
     def self.options(*args, **kwargs, &blk)
-      @routes << [:options, args, kwargs, blk]
+      @router.options(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts LINK requests for the given path.
@@ -198,7 +193,7 @@ module Hanami
     #
     # @see .get
     def self.link(*args, **kwargs, &blk)
-      @routes << [:link, args, kwargs, blk]
+      @router.link(*args, **kwargs, &blk)
     end
 
     # Defines a route that accepts UNLINK requests for the given path.
@@ -213,7 +208,7 @@ module Hanami
     #
     # @see .get
     def self.unlink(*args, **kwargs, &blk)
-      @routes << [:unlink, args, kwargs, blk]
+      @router.unlink(*args, **kwargs, &blk)
     end
 
     # Defines a route that redirects the incoming request to another path.
@@ -227,7 +222,7 @@ module Hanami
     #
     # @see .get
     def self.redirect(*args, **kwargs, &blk)
-      @routes << [:redirect, args, kwargs, blk]
+      @router.redirect(*args, **kwargs, &blk)
     end
 
     # Defines a routing scope. Routes defined in the context of a scope,
@@ -251,7 +246,7 @@ module Hanami
     #
     #   # It generates a route with a path `/v1/users`
     def self.scope(*args, **kwargs, &blk)
-      @routes << [:scope, args, kwargs, blk]
+      @router.scope(*args, **kwargs, &blk)
     end
 
     # Mount a Rack application at the specified path.
@@ -276,7 +271,7 @@ module Hanami
     #     mount MyRackApp.new, at: "/foo"
     #   end
     def self.mount(*args, **kwargs, &blk)
-      @routes << [:mount, args, kwargs, blk]
+      @router.mount(*args, **kwargs, &blk)
     end
 
     # Use a Rack middleware
@@ -294,27 +289,21 @@ module Hanami
     #     use MyRackMiddleware
     #   end
     def self.use(middleware, *args, &blk)
-      @stack.use(middleware, args, &blk)
+      @router.use(middleware, *args, &blk)
     end
 
     # @since 0.1.0
-    def initialize(routes: self.class.routes, stack: self.class.stack)
-      @stack = stack
-      @router = Router.new(stack: @stack) do
-        routes.each do |method_name, args, kwargs, blk|
-          send(method_name, *args, **kwargs, &blk)
-        end
-      end
+    def initialize(router: self.class.router)
+      @router = router
 
       freeze
     end
 
     # @since 0.1.0
     def freeze
-      @app = @stack.finalize(@router)
+      @app = @router.to_rack_app
       @url_helpers = @router.url_helpers
       @router.remove_instance_variable(:@url_helpers)
-      remove_instance_variable(:@stack)
       remove_instance_variable(:@router)
       @url_helpers.freeze
       @app.freeze

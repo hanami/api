@@ -7,6 +7,9 @@ require "json"
 module Hanami
   class API
     module Block
+      # Execution context for Block syntax
+      #
+      # @since 0.1.0
       class Context < Hanami::Router::Block::Context
         # @overload body
         #   Gets the current HTTP response body
@@ -126,12 +129,24 @@ module Hanami
 
         # @since 0.1.0
         # @api private
+        #
+        # rubocop:disable Metrics/AbcSize
+        # rubocop:disable Metrics/MethodLength
         def call
           case caught
             in String => body
             [status, headers, [body]]
             in Integer => status
+            # rubocop:disable Style/RedundantSelf
+            #
+            # NOTE: It must use `self.body` so it will pick the method defined above.
+            #
+            #       If `self` isn't enforced, Ruby will try to bind `body` to
+            #       the current pattern matching context.
+            #       When that happens, the body that was manually set is ignored,
+            #       which results in a bug.
             [status, headers, [self.body || http_status(status)]]
+            # rubocop:enable Style/RedundantSelf
             in [Integer, String] => response
             [response[0], headers, [response[1]]]
             in [Integer, Hash, String] => response
@@ -139,6 +154,8 @@ module Hanami
             [response[0], headers, [response[2]]]
           end
         end
+        # rubocop:enable Metrics/MethodLength
+        # rubocop:enable Metrics/AbcSize
 
         private
 

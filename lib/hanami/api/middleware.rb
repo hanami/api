@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "rack/builder"
-
 module Hanami
   class API
     # Hanami::API middleware stack
@@ -9,6 +7,9 @@ module Hanami
     # @since 0.1.0
     # @api private
     module Middleware
+      require "hanami/api/middleware/app"
+      require "hanami/api/middleware/trie"
+
       # Middleware stack
       #
       # @since 0.1.0
@@ -16,76 +17,46 @@ module Hanami
       class Stack
         # @since 0.1.0
         # @api private
-        ROOT_PREFIX = "/"
-        private_constant :ROOT_PREFIX
-
-        # @since 0.1.0
-        # @api private
-        def initialize
-          @prefix = ROOT_PREFIX
-          @stack = Hash.new { |hash, key| hash[key] = [] }
-        end
-
-        # @since 0.1.0
-        # @api private
-        def use(middleware, args, &blk)
-          @stack[@prefix].push([middleware, args, blk])
-        end
-
-        # @since 0.1.0
-        # @api private
-        def with(path)
-          prefix = @prefix
-          @prefix = path
-          yield
-        ensure
+        def initialize(prefix)
           @prefix = prefix
+          @stack = {}
         end
 
         # @since 0.1.0
         # @api private
-        def finalize(app) # rubocop:disable Metrics/MethodLength
-          uniq!
-          return app if @stack.empty?
+        def use(path, middleware, *args, &blk)
+          # FIXME: test with prefix when Hanami::API.settings and prefix will be supported
+          @stack[path] ||= []
+          @stack[path].push([middleware, args, blk])
+        end
 
-          s = self
-
-          Rack::Builder.new do
-            s.each do |prefix, stack|
-              s.mapped(self, prefix) do
-                stack.each do |middleware, args, blk|
-                  use(middleware, *args, &blk)
-                end
-              end
-
-              run app
-            end
+        # @since 0.1.1
+        # @api private
+        def to_hash
+          @stack.each_with_object({}) do |(path, _), result|
+            result[path] = stack_for(path)
           end
         end
 
-        # @since 0.1.0
+        # @since 0.1.1
         # @api private
-        def each(&blk)
-          uniq!
-          @stack.each(&blk)
-        end
+        def finalize(app)
+          mapping = to_hash
+          return app if mapping.empty?
 
-        # @since 0.1.0
-        # @api private
-        def mapped(builder, prefix, &blk)
-          if prefix == ROOT_PREFIX
-            builder.instance_eval(&blk)
-          else
-            builder.map(prefix, &blk)
-          end
+          App.new(app, mapping)
         end
 
         private
 
-        # @since 0.1.0
+        # @since 0.1.1
         # @api private
-        def uniq!
-          @stack.each_value(&:uniq!)
+        def stack_for(current_path)
+          @stack.each_with_object([]) do |(path, stack), result|
+            next unless current_path.start_with?(path)
+
+            result.push(stack)
+          end.flatten(1)
         end
       end
     end
