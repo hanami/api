@@ -130,7 +130,6 @@ module Hanami
         # @since 0.1.0
         # @api private
         #
-        # rubocop:disable Metrics/AbcSize
         # rubocop:disable Metrics/MethodLength
         def call
           case caught
@@ -147,15 +146,14 @@ module Hanami
             #       which results in a bug.
             [status, headers, [self.body || http_status(status)]]
             # rubocop:enable Style/RedundantSelf
-            in [Integer, String] => response
-            [response[0], headers, [response[1]]]
-            in [Integer, Hash, String] => response
-            headers.merge!(response[1])
-            [response[0], headers, [response[2]]]
+            in [Integer => status, String => body]
+            [status, headers, [body]]
+            in [Integer => status, Hash => caught_headers, String => body]
+            headers.merge!(caught_headers)
+            [status, headers, [body]]
           end
         end
         # rubocop:enable Metrics/MethodLength
-        # rubocop:enable Metrics/AbcSize
 
         private
 
