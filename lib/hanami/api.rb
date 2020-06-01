@@ -293,7 +293,7 @@ module Hanami
     end
 
     # @since 0.1.0
-    def initialize(router: self.class.router)
+    def initialize(router: self.class.router.dup)
       @router = router
 
       freeze
