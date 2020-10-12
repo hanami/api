@@ -141,10 +141,10 @@ get "/", to: MyEndpoint.new
 `Hanami::API` supports the following HTTP methods:
 
   * `get`
-  * `head`
   * `post`
   * `patch`
   * `put`
+  * `delete`
   * `options`
   * `trace`
   * `link`
