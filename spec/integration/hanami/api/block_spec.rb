@@ -28,7 +28,7 @@ RSpec.describe Hanami::API do
           end
 
           get "/serialized" do
-            [418, { "X-Tea" => "White butterfly" }, "I'm a teapot"]
+            [418, {"X-Tea" => "White butterfly"}, "I'm a teapot"]
           end
         end
 
@@ -78,11 +78,11 @@ RSpec.describe Hanami::API do
 
         scope "json" do
           get "/response" do
-            json [{ id: 23 }]
+            json [{id: 23}]
           end
 
           get "/mime" do
-            json [{ id: 15 }], "application/vnd.api+json"
+            json [{id: 15}], "application/vnd.api+json"
           end
         end
 

@@ -4,9 +4,9 @@ RSpec.describe Hanami::API do
   describe "route options" do
     subject do
       Class.new(described_class) do
-        get "/to",     to: ->(*) { [200, { "Content-Length" => "2" }, ["TO"]] }
-        get "/as",     to: ->(*) { [200, { "Content-Length" => "2" }, ["AS"]] }, as: :named_route
-        get "/co/:id", to: ->(*) { [200, { "Content-Length" => "11" }, ["CONSTRAINTS"]] }, id: /\d+/
+        get "/to",     to: ->(*) { [200, {"Content-Length" => "2"}, ["TO"]] }
+        get "/as",     to: ->(*) { [200, {"Content-Length" => "2"}, ["AS"]] }, as: :named_route
+        get "/co/:id", to: ->(*) { [200, {"Content-Length" => "11"}, ["CONSTRAINTS"]] }, id: /\d+/
         get "/blk" do
           "BLOCK"
         end

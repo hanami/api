@@ -114,7 +114,7 @@ RSpec.describe Hanami::API do
       end
     end
 
-    def scope_identifier_middleware(identifier) # rubocop:disable Metrics/MethodLength
+    def scope_identifier_middleware(identifier)
       Class.new do
         @identifier = identifier
 
@@ -147,14 +147,14 @@ RSpec.describe Hanami::API do
         auth = auth_middleware
 
         Class.new(described_class) do
-          root to: ->(*) { [200, { "Content-Length" => "4" }, ["Home"]] }
+          root to: ->(*) { [200, {"Content-Length" => "4"}, ["Home"]] }
 
           scope "/admin" do
             use auth
 
             root to: lambda { |env|
               body = "Admin: User ID (#{env['AUTH_USER_ID']})"
-              [200, { "Content-Length" => body.bytesize.to_s }, [body]]
+              [200, {"Content-Length" => body.bytesize.to_s}, [body]]
             }
           end
         end.new
@@ -203,9 +203,9 @@ RSpec.describe Hanami::API do
         Class.new(described_class) do
           use elapsed
           use scope_identifier.call("Root")
-          root to: ->(*) { [200, { "Content-Length" => "4" }, ["Home"]] }
+          root to: ->(*) { [200, {"Content-Length" => "4"}, ["Home"]] }
 
-          mount ->(*) { [200, { "Content-Length" => "7" }, ["Mounted"]] }, at: "/mounted"
+          mount ->(*) { [200, {"Content-Length" => "7"}, ["Mounted"]] }, at: "/mounted"
 
           scope "/admin" do
             use auth
@@ -213,7 +213,7 @@ RSpec.describe Hanami::API do
 
             root to: lambda { |env|
               body = "Admin: User ID (#{env['AUTH_USER_ID']})"
-              [200, { "Content-Length" => body.bytesize.to_s }, [body]]
+              [200, {"Content-Length" => body.bytesize.to_s}, [body]]
             }
           end
 
@@ -225,7 +225,7 @@ RSpec.describe Hanami::API do
 
             root to: lambda { |*|
               body = "API"
-              [200, { "Content-Length" => body.bytesize.to_s }, [body]]
+              [200, {"Content-Length" => body.bytesize.to_s}, [body]]
             }
 
             scope "v1" do
@@ -235,7 +235,7 @@ RSpec.describe Hanami::API do
 
               root to: lambda { |*|
                 body = "API v1"
-                [200, { "Content-Length" => body.bytesize.to_s }, [body]]
+                [200, {"Content-Length" => body.bytesize.to_s}, [body]]
               }
             end
           end
