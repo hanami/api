@@ -37,6 +37,8 @@ module Hanami
       # @since 0.2.0
       # @api private
       def self.extended(app)
+        super
+
         app.extend(ClassMethods)
         app.extend(ClassMethods::Routes)
         app.include(InstanceMethods)
