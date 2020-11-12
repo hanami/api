@@ -9,21 +9,15 @@ module Hanami
     require "hanami/api/error"
     require "hanami/api/router"
     require "hanami/api/middleware"
+    require "hanami/api/dsl"
 
     # @since 0.1.0
     # @api private
     def self.inherited(app)
       super
 
-      app.class_eval do
-        @router = Router.new
-      end
-    end
-
-    class << self
-      # @since 0.1.1
-      # @api private
-      attr_reader :router
+      app.extend(DSL::ClassMethods)
+      app.include(DSL::InstanceMethods)
     end
 
     # Defines a named root route (a GET route for "/")
@@ -290,29 +284,6 @@ module Hanami
     #   end
     def self.use(middleware, *args, &blk)
       @router.use(middleware, *args, &blk)
-    end
-
-    # @since 0.1.0
-    def initialize(router: self.class.router.dup)
-      @router = router
-
-      freeze
-    end
-
-    # @since 0.1.0
-    def freeze
-      @app = @router.to_rack_app
-      @url_helpers = @router.url_helpers
-      @router.remove_instance_variable(:@url_helpers)
-      remove_instance_variable(:@router)
-      @url_helpers.freeze
-      @app.freeze
-      super
-    end
-
-    # @since 0.1.0
-    def call(env)
-      @app.call(env)
     end
 
     # TODO: verify if needed here on in block context
