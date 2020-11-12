@@ -145,6 +145,7 @@ get "/", to: MyEndpoint.new
   * `post`
   * `patch`
   * `put`
+  * `delete`
   * `options`
   * `trace`
   * `link`
