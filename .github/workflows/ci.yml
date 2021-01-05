@@ -22,6 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
+          - "3.0"
           - "2.7"
     env:
       CODACY_RUN_LOCAL: true
