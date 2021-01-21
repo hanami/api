@@ -13,9 +13,12 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
     - [Rack endpoint](#rack-endpoint)
     - [Block endpoint](#block-endpoint)
       * [String (body)](#string-body)
+      * [Enumerator (body)](#enumerator-body)
       * [Integer (status code)](#integer-status-code)
       * [Integer, String (status code, body)](#integer-string-status-code-body)
+      * [Integer, Enumerator (status code, body)](#integer-enumerator-status-code-body)
       * [Integer, Hash, String (status code, headers, body)](#integer-hash-string-status-code-headers-body)
+      * [Integer, Hash, Enumerator (status code, headers, body)](#integer-hash-enumerator-status-code-headers-body)
   + [Block context](#block-context)
     - [env](#env)
     - [status](#status)
@@ -179,6 +182,16 @@ end
 
 It will return `[200, {}, ["Hello, world"]]`
 
+##### Enumerator (body)
+
+```ruby
+get "/" do
+  Enumerator.new { ... }
+end
+```
+
+It will return `[200, {}, Enumerator]`, see [Streamed Responses](#streamed-responses)
+
 ##### Integer (status code)
 
 ```ruby
@@ -199,6 +212,16 @@ end
 
 It will return `[401, {}, ["You shall not pass"]]`
 
+##### Integer, Enumerator (status code, body)
+
+```ruby
+get "/" do
+  [401, Enumerator.new { ... }]
+end
+```
+
+It will return `[401, {}, Enumerator]`, see [Streamed Responses](#streamed-responses)
+
 ##### Integer, Hash, String (status code, headers, body)
 
 ```ruby
@@ -208,6 +231,16 @@ end
 ```
 
 It will return `[401, {"X-Custom-Header" => "foo"}, ["You shall not pass"]]`
+
+##### Integer, Hash, Enumerator (status code, headers, body)
+
+```ruby
+get "/" do
+  [401, {"X-Custom-Header" => "foo"}, Enumerator.new { ... }]
+end
+```
+
+It will return `[401, {"X-Custom-Header" => "foo"}, Enumerator]`, see [Streamed Responses](#streamed-responses)
 
 ### Block context
 
@@ -274,6 +307,14 @@ get "/" do
 end
 ```
 
+Set HTTP response body using a [Streamed Response](#streamed-responses)
+
+```ruby
+get "/" do
+  body Enumerator.new { ... }
+end
+```
+
 #### params
 
 Access params for current request
@@ -308,6 +349,14 @@ end
 ```
 
 It sets a Rack response: `[401, {}, ["You shall not pass"]]`
+
+You can also use a [Streamed Response](#streamed-responses) here
+
+```ruby
+get "/authenticate" do
+  halt(401, Enumerator.new { ... })
+end
+```
 
 #### redirect
 
@@ -362,6 +411,15 @@ end
 get "/user/:id" do
   user = UserRepository.new.find(params[:id])
   json(user, "application/vnd.api+json")
+end
+```
+
+If you want a [Streamed Response](#streamed-responses)
+
+```ruby
+get "/users" do
+  users = Enumerator.new { ... }
+  json(users)
 end
 ```
 
