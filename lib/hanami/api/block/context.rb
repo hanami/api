@@ -181,7 +181,7 @@ module Hanami
           Rack::Utils::HTTP_STATUS_CODES.fetch(code)
         end
 
-        # @since ?
+        # @since x.x.x
         # @api private
         def json_enum(collection)
           Enumerator.new do |yielder|
