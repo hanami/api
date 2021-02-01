@@ -28,12 +28,19 @@ module Hanami
           end
 
           @trie.freeze
+          @inspector = app.inspector.freeze
         end
 
         # @since 0.1.1
         # @api private
         def call(env)
           @trie.find(env["PATH_INFO"]).call(env)
+        end
+
+        # @since x.x.x
+        # @api private
+        def to_inspect
+          @inspector.call
         end
       end
     end

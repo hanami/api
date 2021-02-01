@@ -117,6 +117,16 @@ module Hanami
         def call(env)
           @app.call(env)
         end
+
+        # Printable routes
+        #
+        # @return [String] printable routes
+        #
+        # @since x.x.x
+        # @api public
+        def to_inspect
+          @app.to_inspect
+        end
       end
     end
   end
