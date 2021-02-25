@@ -27,6 +27,21 @@ module Hanami
           end
         end
 
+        # @since X.X.X 
+        def path(name, variables = {})
+          url_helpers.path(name, variables)
+        end
+
+        # @since X.X.X
+        def url(name, variables = {})
+          url_helpers.url(name, variables)
+        end
+
+        # @since X.X.X
+        def url_helpers
+          env["url_helpers"]
+        end
+
         # Halts the flow of the block and immediately returns with the current
         # HTTP status
         #

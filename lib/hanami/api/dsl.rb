@@ -115,6 +115,7 @@ module Hanami
         # @since 0.2.0
         # @api public
         def call(env)
+          env["url_helpers"] = @url_helpers
           @app.call(env)
         end
 

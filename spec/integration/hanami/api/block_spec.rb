@@ -111,15 +111,11 @@ RSpec.describe Hanami::API do
 
         scope "url_helpers" do
           get "/path" do
-            headers["X-Return-To"] = path(:home)
-
-            "OK"
+            redirect path(:home)
           end
 
           get "/url" do
-            headers["X-Return-To"] = url(:home)
-
-            "OK"
+            redirect url(:home)
           end
         end
 
@@ -281,12 +277,20 @@ RSpec.describe Hanami::API do
     end
 
     context "url helpers" do
-      xit "uses path" do
+      it "uses path" do
         response = app.get("/url_helpers/path", lint: true)
 
         expect(response.status).to  eq(301)
-        expect(response.headers).to eq("Content-Length" => "17", "Location" => "/")
+        expect(response.headers).to eq("Content-Length" => "17", "Location" => "/home")
         expect(response.body).to    eq("Moved Permanently")
+      end
+
+      it "uses url" do
+        response = app.get("/url_helpers/url", lint: true)
+
+        expect(response.status).to eq(301)
+        expect(response.headers).to eq("Content-Length" => "17", "Location" => "http://localhost/home")
+        expect(response.body).to eq("Moved Permanently")
       end
     end
   end
