@@ -57,7 +57,10 @@ module Hanami
           super
 
           app.class_eval do
-            @router = Router.new
+            klass = Block::Context.dup
+            app.const_set(:BlockContext, klass)
+
+            @router = Router.new(block_context: klass)
           end
         end
 
