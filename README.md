@@ -13,9 +13,12 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
     - [Rack endpoint](#rack-endpoint)
     - [Block endpoint](#block-endpoint)
       * [String (body)](#string-body)
+      * [Enumerator (body)](#enumerator-body)
       * [Integer (status code)](#integer-status-code)
       * [Integer, String (status code, body)](#integer-string-status-code-body)
+      * [Integer, Enumerator (status code, body)](#integer-enumerator-status-code-body)
       * [Integer, Hash, String (status code, headers, body)](#integer-hash-string-status-code-headers-body)
+      * [Integer, Hash, Enumerator (status code, headers, body)](#integer-hash-enumerator-status-code-headers-body)
   + [Block context](#block-context)
     - [env](#env)
     - [status](#status)
@@ -28,6 +31,7 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
     - [json](#json)
   + [Scope](#scope)
   + [Rack Middleware](#rack-middleware)
+  + [Streamed Responses](#streamed-responses)
   + [Body Parsers](#body-parsers)
 * [Development](#development)
 * [Contributing](#contributing)
@@ -178,6 +182,16 @@ end
 
 It will return `[200, {}, ["Hello, world"]]`
 
+##### Enumerator (body)
+
+```ruby
+get "/" do
+  Enumerator.new { ... }
+end
+```
+
+It will return `[200, {}, Enumerator]`, see [Streamed Responses](#streamed-responses)
+
 ##### Integer (status code)
 
 ```ruby
@@ -198,6 +212,16 @@ end
 
 It will return `[401, {}, ["You shall not pass"]]`
 
+##### Integer, Enumerator (status code, body)
+
+```ruby
+get "/" do
+  [401, Enumerator.new { ... }]
+end
+```
+
+It will return `[401, {}, Enumerator]`, see [Streamed Responses](#streamed-responses)
+
 ##### Integer, Hash, String (status code, headers, body)
 
 ```ruby
@@ -207,6 +231,16 @@ end
 ```
 
 It will return `[401, {"X-Custom-Header" => "foo"}, ["You shall not pass"]]`
+
+##### Integer, Hash, Enumerator (status code, headers, body)
+
+```ruby
+get "/" do
+  [401, {"X-Custom-Header" => "foo"}, Enumerator.new { ... }]
+end
+```
+
+It will return `[401, {"X-Custom-Header" => "foo"}, Enumerator]`, see [Streamed Responses](#streamed-responses)
 
 ### Block context
 
@@ -273,6 +307,14 @@ get "/" do
 end
 ```
 
+Set HTTP response body using a [Streamed Response](#streamed-responses)
+
+```ruby
+get "/" do
+  body Enumerator.new { ... }
+end
+```
+
 #### params
 
 Access params for current request
@@ -307,6 +349,14 @@ end
 ```
 
 It sets a Rack response: `[401, {}, ["You shall not pass"]]`
+
+You can also use a [Streamed Response](#streamed-responses) here
+
+```ruby
+get "/authenticate" do
+  halt(401, Enumerator.new { ... })
+end
+```
 
 #### redirect
 
@@ -364,6 +414,15 @@ get "/user/:id" do
 end
 ```
 
+If you want a [Streamed Response](#streamed-responses)
+
+```ruby
+get "/users" do
+  users = Enumerator.new { ... }
+  json(users)
+end
+```
+
 ### Scope
 
 Prefixing routes is possible with routing scopes:
@@ -411,6 +470,36 @@ In the example above, `ElapsedTime` is used for each incoming request because
 it's part of the top level scope. `ApiAuthentication` it's used for all the API
 versions, because it's defined in the `"api"` scope. `ApiV1Deprecation` is used
 only by the routes in `"v1"` scope, but not by `"v2"`.
+
+### Streamed Responses
+
+When the work to be done by the server takes time, it may be a good idea to
+stream your response. For this, you just use an `Enumerator` anywhere you would
+normally use a `String` as body or another `Object` as JSON response. Here's an
+example of streaming JSON data:
+
+```ruby
+scope "intense" do
+  use ::Rack::Chunked
+
+  get "/data" do
+    data = Enumerator.new do |yielder|
+      raw_data.each do |item|
+        yielder << do_intense_work_on_item(item)
+      end
+    end
+
+    json(data)
+  end
+end
+```
+
+Note:
+
+* Returning an `Enumerator` will also work without `Rack::Chunked`, it just
+  won't stream but return the whole body at the end instead.
+* Streaming does not work with WEBrick as it buffers its response. We recommend
+  using `puma`, though you may find success with other servers.
 
 ### Body Parsers
 

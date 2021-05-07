@@ -124,7 +124,12 @@ module Hanami
         #   end
         def json(object, mime = "application/json")
           headers["Content-Type"] = mime
-          JSON.generate(object)
+          case object
+            in Enumerator => collection
+            json_enum(collection)
+            else
+            JSON.generate(object)
+          end
         end
 
         # @since 0.1.0
@@ -134,6 +139,8 @@ module Hanami
           case caught
             in String => body
             [status, headers, [body]]
+            in Enumerator => body
+            [status, headers, body]
             in Integer => status
             # rubocop:disable Style/RedundantSelf
             #
@@ -147,9 +154,14 @@ module Hanami
             # rubocop:enable Style/RedundantSelf
             in [Integer => status, String => body]
             [status, headers, [body]]
+            in [Integer => status, Enumerator => body]
+            [status, headers, body]
             in [Integer => status, Hash => caught_headers, String => body]
             headers.merge!(caught_headers)
             [status, headers, [body]]
+            in [Integer => status, Hash => caught_headers, Enumerator => body]
+            headers.merge!(caught_headers)
+            [status, headers, body]
           end
         end
 
@@ -167,6 +179,20 @@ module Hanami
         # @api private
         def http_status(code)
           Rack::Utils::HTTP_STATUS_CODES.fetch(code)
+        end
+
+        # @since x.x.x
+        # @api private
+        def json_enum(collection)
+          Enumerator.new do |yielder|
+            yielder << "["
+            collection.each_with_index do |item, i|
+              yielder << "," if i.positive?
+              yielder << JSON.generate(item)
+            end
+          ensure
+            yielder << "]"
+          end
         end
       end
     end
