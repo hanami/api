@@ -479,17 +479,31 @@ normally use a `String` as body or another `Object` as JSON response. Here's an
 example of streaming JSON data:
 
 ```ruby
-scope "intense" do
+scope "stream" do
   use ::Rack::Chunked
 
   get "/data" do
-    data = Enumerator.new do |yielder|
-      raw_data.each do |item|
-        yielder << do_intense_work_on_item(item)
+    Enumerator.new do |yielder|
+      data = %w[a b c]
+      data.each do |item|
+        yielder << item
+      end
+    end
+  end
+
+  get "/to_enum" do
+    %w[a b c].to_enum
+  end
+
+  get "/json" do
+    result = Enumerator.new do |yielder|
+      data = %w[a b c]
+      data.each do |item|
+        yielder << item
       end
     end
 
-    json(data)
+    json(result)
   end
 end
 ```
@@ -498,8 +512,14 @@ Note:
 
 * Returning an `Enumerator` will also work without `Rack::Chunked`, it just
   won't stream but return the whole body at the end instead.
+* Data pushed to `yielder` MUST be a `String`.
 * Streaming does not work with WEBrick as it buffers its response. We recommend
   using `puma`, though you may find success with other servers.
+* To manual test this feature use a web browser or cURL:
+
+```shell
+$ curl --raw -i http://localhost:2300/stream/data
+```
 
 ### Body Parsers
 
