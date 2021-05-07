@@ -29,13 +29,13 @@ module Hanami
     #
     # @since x.x.x
     #
-    # @example Iniline helpers definition
+    # @example Inline helpers definition
     #   require "hanami/api"
     #
     #   class MyAPI < Hanami::API
     #     helpers do
     #       def redirect_to_root
-    #         # redirect method is provider by Hanami::API block context
+    #         # redirect method is provided by Hanami::API block context
     #         redirect "/"
     #       end
     #     end
