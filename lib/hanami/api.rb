@@ -20,6 +20,57 @@ module Hanami
       app.include(DSL::InstanceMethods)
     end
 
+    # Defines helper methods available within the block context.
+    # Helper methods have access to default utilities available in block
+    # context (e.g. `#halt`).
+    #
+    # @param mod [Module] optional module to include in block context
+    # @param blk [Proc] inline helper definitions
+    #
+    # @since x.x.x
+    #
+    # @example Inline helpers definition
+    #   require "hanami/api"
+    #
+    #   class MyAPI < Hanami::API
+    #     helpers do
+    #       def redirect_to_root
+    #         # redirect method is provided by Hanami::API block context
+    #         redirect "/"
+    #       end
+    #     end
+    #
+    #     root { "Hello, World" }
+    #
+    #     get "/legacy" do
+    #       redirect_to_root
+    #     end
+    #   end
+    #
+    # @example Module helpers definition
+    #   require "hanami/api"
+    #
+    #   class MyAPI < Hanami::API
+    #     module Authentication
+    #       private
+    #
+    #       def unauthorized
+    #         halt(401)
+    #       end
+    #     end
+    #
+    #     helpers(Authentication)
+    #
+    #     root { "Hello, World" }
+    #
+    #     get "/secrets" do
+    #       unauthorized
+    #     end
+    #   end
+    def self.helpers(mod = nil, &blk)
+      const_get(:BlockContext).include(mod || Module.new(&blk))
+    end
+
     # Defines a named root route (a GET route for "/")
     #
     # @param to [#call] the Rack endpoint

@@ -30,6 +30,7 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
     - [back](#back)
     - [json](#json)
   + [Scope](#scope)
+  + [Helpers](#helpers)
   + [Rack Middleware](#rack-middleware)
   + [Streamed Responses](#streamed-responses)
   + [Body Parsers](#body-parsers)
@@ -437,6 +438,58 @@ end
 
 It will generate a route with `"/api/v1/users"` as path.
 
+### Helpers
+
+Define helper methods available within the block context.
+Helper methods have access to default utilities available in block context (e.g. `#halt`).
+
+Helpers can be defined inline by passing a block to the `.helpers` method:
+
+```ruby
+require "hanami/api"
+
+class MyAPI < Hanami::API
+  helpers do
+    def redirect_to_root
+      # redirect method is provided by Hanami::API block context
+      redirect "/"
+    end
+  end
+
+  root { "Hello, World" }
+
+  get "/legacy" do
+    redirect_to_root
+  end
+end
+```
+
+Alternatively, `.helpers` accepts a module.
+
+```ruby
+require "hanami/api"
+
+class MyAPI < Hanami::API
+  module Authentication
+    private
+
+    def unauthorized
+      halt(401)
+    end
+  end
+
+  helpers(Authentication)
+
+  root { "Hello, World" }
+
+  get "/secrets" do
+    unauthorized
+  end
+end
+```
+
+You can use `.helpers` multiple times in the same app.
+
 ### Rack Middleware
 
 To mount a Rack middleware it's possible with `.use`
@@ -544,4 +597,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/hanami/api.
-
