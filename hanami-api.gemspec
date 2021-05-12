@@ -35,4 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.8"
   spec.add_development_dependency "rubocop", "~> 0.86"
   spec.add_development_dependency "yard", "~> 0.9"
+
+  spec.add_development_dependency "dry-system", "~> 0.19"
 end
