@@ -13,7 +13,7 @@ module Hanami
     module Container
       def self.extended(app)
         super
-        container = Class.new(Dry::Container) do
+        container = Class.new do
           extend Dry::Container::Mixin
         end
 
