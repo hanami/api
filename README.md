@@ -9,8 +9,8 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-api.svg)](https://badge.fury.io/rb/hanami-api)
-[![CI](https://github.com/hanami/api/workflows/ci/badge.svg?branch=1.3.x)](https://github.com/hanami/api/actions?query=workflow%3Aci+branch%3A1.3.x)
-[![Test Coverage](https://codecov.io/gh/hanami/api/branch/1.3.x/graph/badge.svg)](https://codecov.io/gh/hanami/api)
+[![CI](https://github.com/hanami/api/workflows/ci/badge.svg?branch=0.2.x)](https://github.com/hanami/api/actions?query=workflow%3Aci+branch%3A0.2.x)
+[![Test Coverage](https://codecov.io/gh/hanami/api/branch/0.2.x/graph/badge.svg)](https://codecov.io/gh/hanami/api)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/api?project=Bundler)
 [![Inline Docs](http://inch-ci.org/github/hanami/api.svg)](http://inch-ci.org/github/hanami/api)
 
