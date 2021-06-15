@@ -1,7 +1,52 @@
 # Hanami::API
 
 Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
-* [Installation](#installation)
+
+## Version
+
+**This branch contains the code for `hanami-api` 0.2.x.**
+
+## Status
+
+[![Gem Version](https://badge.fury.io/rb/hanami-api.svg)](https://badge.fury.io/rb/hanami-api)
+[![CI](https://github.com/hanami/api/workflows/ci/badge.svg?branch=1.3.x)](https://github.com/hanami/api/actions?query=workflow%3Aci+branch%3A1.3.x)
+[![Test Coverage](https://codecov.io/gh/hanami/api/branch/1.3.x/graph/badge.svg)](https://codecov.io/gh/hanami/api)
+[![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/api?project=Bundler)
+[![Inline Docs](http://inch-ci.org/github/hanami/api.svg)](http://inch-ci.org/github/hanami/api)
+
+## Contact
+
+* Home page: http://hanamirb.org
+* Mailing List: http://hanamirb.org/mailing-list
+* API Doc: http://rdoc.info/gems/hanami-api
+* Bugs/Issues: https://github.com/hanami/api/issues
+* Support: http://stackoverflow.com/questions/tagged/hanami
+* Chat: http://chat.hanamirb.org
+
+## Rubies
+
+__Hanami::API__ supports Ruby (MRI) 2.7+
+
+## Installation
+
+Add this line to your application's `Gemfile`:
+
+```ruby
+gem "hanami-api"
+```
+
+And then execute:
+
+```shell
+$ bundle install
+```
+
+Or install it yourself as:
+
+```shell
+$ gem install hanami-api
+```
+
 * [Performance](#performance)
   + [Runtime](#runtime)
   + [Memory](#memory)
@@ -36,26 +81,6 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
   + [Body Parsers](#body-parsers)
 * [Development](#development)
 * [Contributing](#contributing)
-
-## Installation
-
-Add this line to your application's `Gemfile`:
-
-```ruby
-gem "hanami-api"
-```
-
-And then execute:
-
-```shell
-$ bundle install
-```
-
-Or install it yourself as:
-
-```shell
-$ gem install hanami-api
-```
 
 ## Performance
 
