@@ -29,10 +29,11 @@ __Hanami::API__ supports Ruby (MRI) 2.7+
 
 ## Installation
 
-Add this line to your application's `Gemfile`:
+Add these lines to your application's `Gemfile`:
 
 ```ruby
 gem "hanami-api"
+gem "puma" # or "webrick", or "thin", "falcon"
 ```
 
 And then execute:
