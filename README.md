@@ -79,6 +79,7 @@ $ gem install hanami-api
   + [Rack Middleware](#rack-middleware)
   + [Streamed Responses](#streamed-responses)
   + [Body Parsers](#body-parsers)
+* [Testing](#testing)
 * [Development](#development)
 * [Contributing](#contributing)
 
@@ -612,6 +613,60 @@ require "hanami/middleware/body_parser"
 
 use Hanami::Middleware::BodyParser, :json
 ```
+
+## Testing
+
+## Unit testing
+You can unit test your `Hanami::API` app by passing a `env` hash to your app's `#call` method.
+
+The keys that (based on the Rack standard) `Hanami::API` uses for routing are:
+* `PATH_INFO`
+* `REQUEST_METHOD`
+
+
+For example, a spec for the basic app in the [Usage section](https://github.com/hanami/api#usage) could be:
+
+```
+require "my_project/app"
+
+RSpec.describe App do
+  describe "#call" do
+    it "returns successfully" do
+      env = {"PATH_INFO" => "/", "REQUEST_METHOD" => "GET"]}
+      response = subject.call({"PATH_INFO" => "/", "REQUEST_METHOD" => "GET"]})
+      expect(response).to eq([200, {}, ["Hello, world"]])
+    end
+  end
+end
+```
+
+## Integration testing
+Add this line to your application's `Gemfile`:
+
+```ruby
+gem "rack-test", group: :test
+```
+
+In a test, load `Rack::Test`:
+
+```ruby
+require "rack/test"
+```
+
+and then, inside your spec/test, include its helper methods:
+
+```ruby
+include Rack::Test::Methods
+```
+
+Then you can use its methods like `get` and `last_response`, e.g.:
+
+```ruby
+  it "returns the status 200" do
+    get "/"
+    expect(last_response.status).to eq 200
+  end
+end
 
 ## Development
 
