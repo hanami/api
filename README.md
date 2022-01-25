@@ -25,7 +25,7 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
 
 ## Rubies
 
-__Hanami::API__ supports Ruby (MRI) 2.7+
+__Hanami::API__ supports Ruby (MRI) 3.0+
 
 ## Installation
 
