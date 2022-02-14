@@ -63,13 +63,14 @@ RSpec.describe Hanami::API do
           "<Middleware::API::Limiter>"
         end
 
-        def initialize(app)
+        def initialize(app, quota:)
           @app = app
+          @quota = quota
         end
 
         def call(env)
           status, headers, body = @app.call(env)
-          headers["X-API-Rate-Limit-Quota"] = "4000"
+          headers["X-API-Rate-Limit-Quota"] = @quota
 
           [status, headers, body]
         end
@@ -220,7 +221,7 @@ RSpec.describe Hanami::API do
           # Without leading slash
           # See: https://github.com/hanami/api/issues/8
           scope "api" do
-            use rate_limiter
+            use rate_limiter, quota: '4000'
             use scope_identifier.call("Api")
 
             root to: lambda { |*|
