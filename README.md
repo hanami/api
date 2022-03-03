@@ -663,10 +663,9 @@ include Rack::Test::Methods
 Then you can use its methods like `get` and `last_response`, e.g.:
 
 ```ruby
-  it "returns the status 200" do
-    get "/"
-    expect(last_response.status).to eq 200
-  end
+it "returns the status 200" do
+  get "/"
+  expect(last_response.status).to eq 200
 end
 ```
 
