@@ -668,6 +668,7 @@ Then you can use its methods like `get` and `last_response`, e.g.:
     expect(last_response.status).to eq 200
   end
 end
+```
 
 ## Development
 
