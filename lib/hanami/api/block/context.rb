@@ -125,9 +125,9 @@ module Hanami
         def json(object, mime = "application/json")
           headers["Content-Type"] = mime
           case object
-            in Enumerator => collection
+          in Enumerator => collection
             json_enum(collection)
-            else
+          else
             JSON.generate(object)
           end
         end
@@ -137,12 +137,11 @@ module Hanami
         #
         def call
           case caught
-            in String => body
+          in String => body
             [status, headers, [body]]
-            in Enumerator => body
+          in Enumerator => body
             [status, headers, body]
-            in Integer => status
-            # rubocop:disable Style/RedundantSelf
+          in Integer => status
             #
             # NOTE: It must use `self.body` so it will pick the method defined above.
             #
@@ -151,15 +150,14 @@ module Hanami
             #       When that happens, the body that was manually set is ignored,
             #       which results in a bug.
             [status, headers, [self.body || http_status(status)]]
-            # rubocop:enable Style/RedundantSelf
-            in [Integer => status, String => body]
+          in [Integer => status, String => body]
             [status, headers, [body]]
-            in [Integer => status, Enumerator => body]
+          in [Integer => status, Enumerator => body]
             [status, headers, body]
-            in [Integer => status, Hash => caught_headers, String => body]
+          in [Integer => status, Hash => caught_headers, String => body]
             headers.merge!(caught_headers)
             [status, headers, [body]]
-            in [Integer => status, Hash => caught_headers, Enumerator => body]
+          in [Integer => status, Hash => caught_headers, Enumerator => body]
             headers.merge!(caught_headers)
             [status, headers, body]
           end
