@@ -95,8 +95,8 @@ module Hanami
     #       "Hello from Hanami!"
     #     end
     #   end
-    def self.root(*args, **kwargs, &blk)
-      @router.root(*args, **kwargs, &blk)
+    def self.root(...)
+      @router.root(...)
     end
 
     # Defines a route that accepts GET requests for the given path.
@@ -132,8 +132,8 @@ module Hanami
     #   class MyAPI < Hanami::API
     #     get "/users/:id", to: ->(*) { [200, {}, ["OK"]] }, id: /\d+/
     #   end
-    def self.get(*args, **kwargs, &blk)
-      @router.get(*args, **kwargs, &blk)
+    def self.get(...)
+      @router.get(...)
     end
 
     # Defines a route that accepts POST requests for the given path.
@@ -147,8 +147,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.post(*args, **kwargs, &blk)
-      @router.post(*args, **kwargs, &blk)
+    def self.post(...)
+      @router.post(...)
     end
 
     # Defines a route that accepts PATCH requests for the given path.
@@ -162,8 +162,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.patch(*args, **kwargs, &blk)
-      @router.patch(*args, **kwargs, &blk)
+    def self.patch(...)
+      @router.patch(...)
     end
 
     # Defines a route that accepts PUT requests for the given path.
@@ -177,8 +177,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.put(*args, **kwargs, &blk)
-      @router.put(*args, **kwargs, &blk)
+    def self.put(...)
+      @router.put(...)
     end
 
     # Defines a route that accepts DELETE requests for the given path.
@@ -192,8 +192,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.delete(*args, **kwargs, &blk)
-      @router.delete(*args, **kwargs, &blk)
+    def self.delete(...)
+      @router.delete(...)
     end
 
     # Defines a route that accepts TRACE requests for the given path.
@@ -207,8 +207,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.trace(*args, **kwargs, &blk)
-      @router.trace(*args, **kwargs, &blk)
+    def self.trace(...)
+      @router.trace(...)
     end
 
     # Defines a route that accepts OPTIONS requests for the given path.
@@ -222,8 +222,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.options(*args, **kwargs, &blk)
-      @router.options(*args, **kwargs, &blk)
+    def self.options(...)
+      @router.options(...)
     end
 
     # Defines a route that accepts LINK requests for the given path.
@@ -237,8 +237,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.link(*args, **kwargs, &blk)
-      @router.link(*args, **kwargs, &blk)
+    def self.link(...)
+      @router.link(...)
     end
 
     # Defines a route that accepts UNLINK requests for the given path.
@@ -252,8 +252,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.unlink(*args, **kwargs, &blk)
-      @router.unlink(*args, **kwargs, &blk)
+    def self.unlink(...)
+      @router.unlink(...)
     end
 
     # Defines a route that redirects the incoming request to another path.
@@ -266,8 +266,8 @@ module Hanami
     # @since 0.1.0
     #
     # @see .get
-    def self.redirect(*args, **kwargs, &blk)
-      @router.redirect(*args, **kwargs, &blk)
+    def self.redirect(...)
+      @router.redirect(...)
     end
 
     # Defines a routing scope. Routes defined in the context of a scope,
@@ -290,8 +290,8 @@ module Hanami
     #   end
     #
     #   # It generates a route with a path `/v1/users`
-    def self.scope(*args, **kwargs, &blk)
-      @router.scope(*args, **kwargs, &blk)
+    def self.scope(...)
+      @router.scope(...)
     end
 
     # Mount a Rack application at the specified path.
@@ -315,8 +315,8 @@ module Hanami
     #   class MyAPI < Hanami::API
     #     mount MyRackApp.new, at: "/foo"
     #   end
-    def self.mount(*args, **kwargs, &blk)
-      @router.mount(*args, **kwargs, &blk)
+    def self.mount(...)
+      @router.mount(...)
     end
 
     # Use a Rack middleware

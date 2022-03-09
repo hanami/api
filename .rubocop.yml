@@ -7,4 +7,8 @@
 inherit_from:
   - https://raw.githubusercontent.com/hanami/devtools/main/.rubocop.yml
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.0
+
+Lint/EmptyBlock:
+  Exclude:
+    - "./spec/integration/hanami/api/block_spec.rb"

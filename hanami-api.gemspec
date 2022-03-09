@@ -28,11 +28,12 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+  spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.add_dependency "hanami-router", "~> 2.0.alpha"
 
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.8"
-  spec.add_development_dependency "rubocop", "~> 0.86"
+  spec.add_development_dependency "rubocop", "~> 1.0"
   spec.add_development_dependency "yard", "~> 0.9"
 end
