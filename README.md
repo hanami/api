@@ -627,14 +627,13 @@ The keys that (based on the Rack standard) `Hanami::API` uses for routing are:
 
 For example, a spec for the basic app in the [Usage section](https://github.com/hanami/api#usage) could be:
 
-```
+```ruby
 require "my_project/app"
 
 RSpec.describe App do
   describe "#call" do
     it "returns successfully" do
-      env = {"PATH_INFO" => "/", "REQUEST_METHOD" => "GET"]}
-      response = subject.call({"PATH_INFO" => "/", "REQUEST_METHOD" => "GET"]})
+      response = subject.call({"PATH_INFO" => "/", "REQUEST_METHOD" => "GET"})
       expect(response).to eq([200, {}, ["Hello, world"]])
     end
   end
