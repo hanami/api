@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "hanami/middleware/app"
+
 module Hanami
   class API
     # Hanami::API middleware stack
@@ -7,9 +9,6 @@ module Hanami
     # @since 0.1.0
     # @api private
     module Middleware
-      require "hanami/api/middleware/app"
-      require "hanami/api/middleware/trie"
-
       # Middleware stack
       #
       # @since 0.1.0
@@ -44,7 +43,7 @@ module Hanami
           mapping = to_hash
           return app if mapping.empty?
 
-          App.new(app, mapping)
+          Hanami::Middleware::App.new(app, mapping)
         end
 
         private
