@@ -11,6 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Hanami API"
   spec.description   = "Extremely fast and lightweight HTTP API"
   spec.homepage      = "http://rubygems.org"
+  spec.licenses      = ["MIT"]
   spec.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"

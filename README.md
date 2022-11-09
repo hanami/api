@@ -677,3 +677,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/hanami/api.
+
+## Copyright
+
+Copyright © 2014-2022 Hanami Team – Released under MIT License.
