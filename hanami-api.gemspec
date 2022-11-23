@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.metadata["rubygems_mfa_required"] = "true"
 
-  spec.add_dependency "hanami-router", "~> 2.0.rc"
+  spec.add_dependency "hanami-router", "~> 2.0"
 
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.8"
