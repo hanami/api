@@ -5,6 +5,12 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
 
 ### Added
 - [Luca Guidi] Official support for Ruby 3.1 & 3.2
+- [Thomas Jachmann] Streamed responses
+- [Luca Guidi] Introduce `Hanami::API.helpers` to define helper methods to be used in route blocks
+- [Luca Guidi] Introduce `Hanami::API#to_inspect` to inspect app routes
+
+### Changed
+- [Luca Guidi] Drop support for Ruby 2.7
 
 ## v0.2.0 - 2021-01-05
 ### Added
