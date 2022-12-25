@@ -1,6 +1,11 @@
 # Hanami::API
 Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
 
+## v0.3.0 - 2022-12-25
+
+### Added
+- [Luca Guidi] Official support for Ruby 3.1 & 3.2
+
 ## v0.2.0 - 2021-01-05
 ### Added
 - [Luca Guidi] Official support for Ruby: MRI 3.0
