@@ -135,7 +135,7 @@ module Hanami
         # @since 0.1.0
         # @api private
         #
-        def call
+        def call # rubocop:disable Metrics/PerceivedComplexity
           case caught
           in String => body
             [status, headers, [body]]

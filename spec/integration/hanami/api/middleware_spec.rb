@@ -313,5 +313,46 @@ RSpec.describe Hanami::API do
         end
       end
     end
+
+    context "with variable scope" do
+      let(:log_tenant) do
+        Class.new do
+          def initialize(app)
+            @app = app
+          end
+
+          def call(env)
+            status, headers, body = @app.call(env)
+            headers["X-Tenant-ID"] = env.dig("router.params", :tenant_id)
+
+            [status, headers, body]
+          end
+        end
+      end
+
+      let(:api) do
+        log = log_tenant
+
+        Class.new(described_class) do
+          scope "i" do
+            scope ":tenant_id" do
+              use log
+
+              get "foo" do
+                "Hello, world #{params[:tenant_id]}"
+              end
+            end
+          end
+        end.new
+      end
+
+      it "uses rack middleware" do
+        response = app.get("/i/42/foo", lint: true)
+
+        expect(response.status).to be(200)
+        expect(response.body).to eq("Hello, world 42")
+        expect(response.headers).to_not have_key("x-auth-user-id")
+      end
+    end
   end
 end
