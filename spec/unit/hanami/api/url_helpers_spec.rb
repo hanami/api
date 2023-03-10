@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uri"
+
 RSpec.describe Hanami::API do
   describe "URL helpers" do
     subject do
@@ -15,7 +17,7 @@ RSpec.describe Hanami::API do
     end
 
     it "generates absolute path" do
-      expect(subject.url(:vinyl, id: 23)).to eq("http://localhost/vinyls/23")
+      expect(subject.url(:vinyl, id: 23)).to eq(URI("http://localhost/vinyls/23"))
     end
   end
 end
