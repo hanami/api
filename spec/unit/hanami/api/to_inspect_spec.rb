@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Hanami::API do
   describe "#to_inspect" do
     context "without Rack middleware" do

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Hanami::API::Middleware::Stack do
   describe "#to_hash" do
     it "serializes to Hash" do

@@ -140,8 +140,6 @@ Requests per second hitting the 1st (and only route) and the 10,000th route to m
 Create `config.ru` at the root of your project:
 
 ```ruby
-# frozen_string_literal: true
-
 require "bundler/setup"
 require "hanami/api"
 
@@ -522,8 +520,6 @@ You can use `.helpers` multiple times in the same app.
 To mount a Rack middleware it's possible with `.use`
 
 ```ruby
-# frozen_string_literal: true
-
 require "bundler/setup"
 require "hanami/api"
 

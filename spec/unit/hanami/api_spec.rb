@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Hanami::API do
   subject do
     Class.new(described_class) do

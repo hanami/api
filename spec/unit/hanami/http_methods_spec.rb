@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Hanami::API do
   describe "HTTP methods" do
     RSpec::Support::HTTP.supported_methods.each do |http_method|

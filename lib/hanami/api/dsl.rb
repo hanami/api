@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Hanami
   class API
     # Expose Hanami::API features to third party frameworks that need to expose

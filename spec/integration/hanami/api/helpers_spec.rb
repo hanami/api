@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe Hanami::API do
   describe ".helpers" do
     let(:app) { Rack::MockRequest.new(api) }

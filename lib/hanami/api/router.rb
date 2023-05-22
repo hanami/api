@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "hanami/router"
 require "hanami/router/inspector"
 require "hanami/api/block/context"
