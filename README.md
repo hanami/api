@@ -2,32 +2,24 @@
 
 Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
 
-## Version
-
-**This branch contains the code for `hanami-api` 0.3.x.**
-
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/hanami-api.svg)](https://badge.fury.io/rb/hanami-api)
-[![CI](https://github.com/hanami/api/workflows/ci/badge.svg?branch=main)](https://github.com/hanami/api/actions?query=workflow%3Aci+branch%3Amain)
+[![CI](https://github.com/hanami/api/actions/workflows/ci.yml/badge.svg)](https://github.com/hanami/api/actions?query=workflow%3Aci+branch%3Amain)
 [![Test Coverage](https://codecov.io/gh/hanami/api/branch/main/graph/badge.svg)](https://codecov.io/gh/hanami/api)
 [![Depfu](https://badges.depfu.com/badges/a8545fb67cf32a2c75b6227bc0821027/overview.svg)](https://depfu.com/github/hanami/api?project=Bundler)
-[![Inline Docs](http://inch-ci.org/github/hanami/api.svg)](http://inch-ci.org/github/hanami/api)
 
 ## Contact
 
 * Home page: http://hanamirb.org
 * Mailing List: http://hanamirb.org/mailing-list
-* API Doc: http://rdoc.info/gems/hanami-api
+* API Doc: http://rubydoc.info/gems/hanami-api
 * Bugs/Issues: https://github.com/hanami/api/issues
-* Support: http://stackoverflow.com/questions/tagged/hanami
 * Chat: http://chat.hanamirb.org
 
-## Rubies
-
-__Hanami::API__ supports Ruby (MRI) 3.0+
-
 ## Installation
+
+__Hanami::API__ supports Ruby (MRI) 3.1+
 
 Add these lines to your application's `Gemfile`:
 
@@ -680,4 +672,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/hanami
 
 ## Copyright
 
-Copyright © 2014-2022 Hanami Team – Released under MIT License.
+Copyright © 2014–2024 Hanami Team – Released under MIT License.
