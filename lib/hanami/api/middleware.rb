@@ -23,10 +23,10 @@ module Hanami
 
         # @since 0.1.0
         # @api private
-        def use(path, middleware, *args, &blk)
+        def use(path, middleware, *args, **kwargs, &blk)
           # FIXME: test with prefix when Hanami::API.settings and prefix will be supported
           @stack[path] ||= []
-          @stack[path].push([middleware, args, blk])
+          @stack[path].push([middleware, args, kwargs, blk])
         end
 
         # @since 0.1.1
