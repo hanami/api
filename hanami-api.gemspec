@@ -37,4 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.8"
   spec.add_development_dependency "rubocop", "~> 1.0"
   spec.add_development_dependency "yard", "~> 0.9"
+
+  spec.add_development_dependency "dry-container", "~> 0.7"
+  spec.add_development_dependency "dry-auto_inject", "~> 0.7"
 end
