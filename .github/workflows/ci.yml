@@ -25,9 +25,6 @@ jobs:
           - "3.3"
           - "3.2"
           - "3.1"
-    env:
-      CODACY_RUN_LOCAL: true
-      CODACY_PROJECT_TOKEN: ${{secrets.CODACY_PROJECT_TOKEN}}
     steps:
       - uses: actions/checkout@v1
       - name: Install package dependencies
@@ -36,6 +33,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{matrix.ruby}}
+          bundler-cache: true # 'bundle install' and cache gems
       - name: Install latest bundler
         run: |
           gem install bundler --no-document
