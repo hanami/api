@@ -22,9 +22,9 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
+          - "3.4"
           - "3.3"
           - "3.2"
-          - "3.1"
     steps:
       - uses: actions/checkout@v1
       - name: Install package dependencies
