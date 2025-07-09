@@ -19,7 +19,7 @@ Minimal, extremely fast, lightweight Ruby framework for HTTP APIs.
 
 ## Installation
 
-__Hanami::API__ supports Ruby (MRI) 3.1+
+__Hanami::API__ supports Ruby (MRI) 3.2+
 
 Add these lines to your application's `Gemfile`:
 
